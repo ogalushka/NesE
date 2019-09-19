@@ -2,14 +2,18 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class ORA : IOpCode
+    public class ORA : Operation
     {
-        public void Execute(CPU cpu, IAddressing addresing)
+        public ORA(CPU cpu) : base(cpu)
         {
-            byte value = addresing.GetValue(cpu);
-            cpu.A = (byte)(value | cpu.A);
-            FlagChecker.SetNegative(cpu, cpu.A);
-            FlagChecker.SetZero(cpu, cpu.A);
+        }
+
+        public override void Execute(BaseAddressAccessor addresing)
+        {
+            byte value = addresing.GetValue();
+            CPU.A = (byte)(value | CPU.A);
+            SetNegative(CPU.A);
+            SetZero(CPU.A);
         }
     }
 }

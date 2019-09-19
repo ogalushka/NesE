@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NesE.nes.cpu.addressign
+﻿namespace NesE.nes.cpu.addressign
 {
-    public class ZeroPage : IAddressing
+    public class ZeroPage : IAddressResolver
     {
-        public byte GetValue(CPU cpu)
+        public ushort GetAddress(CPU cpu)
         {
-            return cpu.Ram[cpu.ReadNext()];
+            return cpu.ReadNext();
         }
     }
 }

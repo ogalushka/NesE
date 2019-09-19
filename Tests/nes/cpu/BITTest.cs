@@ -10,12 +10,12 @@ namespace Tests.nes.cpu
 {
     public class BITTest
     {
-        public RAM _ram;
+        public TestRAM _ram;
         public CPU _cpu;
 
         public BITTest()
         {
-            _ram = new RAM();
+            _ram = new TestRAM();
             _cpu = new CPU(_ram);
         }
 
@@ -39,7 +39,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
         }
 
         [Theory]
@@ -52,7 +52,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
         }
 
         [Theory]
@@ -64,7 +64,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.V);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.V);
         }
 
         [Theory]
@@ -76,7 +76,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.V);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.V);
         }
 
         [Theory]
@@ -88,7 +88,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
         }
 
         [Theory]
@@ -100,7 +100,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
         }
     }
 }

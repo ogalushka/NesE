@@ -1,11 +1,11 @@
 ﻿namespace NesE.nes.cpu.addressign
 {
-    public class ZeroPageX : IAddressing
+    public class ZeroPageX : IAddressResolver
     {
-        public byte GetValue(CPU cpu)
+        public ushort GetAddress(CPU cpu)
         {
             byte address = (byte)(cpu.ReadNext() + cpu.X);
-            return cpu.Ram[address];
+            return address;
         }
     }
 }

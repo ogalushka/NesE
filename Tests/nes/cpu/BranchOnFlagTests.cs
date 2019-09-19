@@ -10,7 +10,7 @@ namespace Tests.nes.cpu
         private readonly CPU _cpu;
         public BranchOnFlagTests()
         {
-            _cpu = new CPU(new RAM());
+            _cpu = new CPU(new TestRAM());
         }
 
         [Theory]

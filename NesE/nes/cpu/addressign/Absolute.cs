@@ -1,13 +1,13 @@
 ﻿namespace NesE.nes.cpu.addressign
 {
-    public class Absolute : IAddressing
+    public class Absolute : IAddressResolver
     {
-        public byte GetValue(CPU cpu)
+        public ushort GetAddress(CPU cpu)
         {
             var lower = cpu.ReadNext();
             var higher = cpu.ReadNext();
             var address = (higher << 8) | lower;
-            return cpu.Ram[address];
+            return (ushort)address;
         }
     }
 }

@@ -2,14 +2,19 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class ASL : IOpCode
+    public class ASL : Operation
     {
-        private ROL rol = new ROL();
+        private readonly ROL rol;
 
-        public void Execute(CPU cpu, IAddressing addresing)
+        public ASL(CPU cpu) : base(cpu)
         {
-            cpu.ClearFlag(PFlag.C);
-            rol.Execute(cpu, addresing);
+            rol = new ROL(cpu);
+        }
+
+        public override void Execute(BaseAddressAccessor addresing)
+        {
+            CPU.ClearFlag(PFlag.C);
+            rol.Execute(addresing);
         }
     }
 }

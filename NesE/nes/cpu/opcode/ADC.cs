@@ -2,20 +2,24 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class ADC : IOpCode
+    public class ADC : Operation
     {
-        public void Execute(CPU cpu, IAddressing addressing)
+        public ADC(CPU cpu) : base(cpu)
         {
-            var value = addressing.GetValue(cpu);
+        }
 
-            int carry = cpu.GetFlag(PFlag.C) ? 1 : 0;
-            int result = value + cpu.A + carry;
-            FlagChecker.SetZero(cpu, (byte) result);
-            FlagChecker.SetNegative(cpu, (byte) result);
-            FlagChecker.SetOverflow(cpu, value, cpu.A, (byte)result);
-            FlagChecker.SetCarry(cpu, result);
+        public override void Execute(BaseAddressAccessor addressing)
+        {
+            var value = addressing.GetValue();
 
-            cpu.A = (byte)result;
+            int carry = CPU.GetFlag(PFlag.C) ? 1 : 0;
+            int result = value + CPU.A + carry;
+            SetZero((byte) result);
+            SetNegative((byte) result);
+            SetOverflow(value, CPU.A, (byte)result);
+            SetCarry(result);
+
+            CPU.A = (byte)result;
         }
     }
 }

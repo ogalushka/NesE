@@ -2,14 +2,19 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class LSR : IOpCode
+    public class LSR : Operation
     {
-        private ROR rol = new ROR();
+        private ROR rol;
 
-        public void Execute(CPU cpu, IAddressing addresing)
+        public LSR(CPU cpu) : base(cpu)
         {
-            cpu.ClearFlag(PFlag.C);
-            rol.Execute(cpu, addresing);
+            rol = new ROR(cpu);
+        }
+
+        public override void Execute(BaseAddressAccessor addresing)
+        {
+            CPU.ClearFlag(PFlag.C);
+            rol.Execute(addresing);
         }
     }
 }

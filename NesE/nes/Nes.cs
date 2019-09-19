@@ -1,39 +1,68 @@
-﻿using NesE.nes.cpu;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using NesE.nes.cpu;
+using NesE.nes.memory;
+using NesE.nes.ppu;
+using NesE.nes.rom;
 
 namespace NesE.nes
 {
-    class Nes
+    public class Nes
     {
-        private CPU _cpu;
-        private RAM _ram;
-        private Clock _clock;
+        public CPU CPU;
+        public PPU PPU;
 
         public Nes()
         {
-            _ram = new RAM();
-            _cpu = new CPU(_ram);
-            _clock = new Clock();
-            _clock.CPUStep += StepCPU;
-            _clock.PPUStep += StepPPU;
         }
 
-        public double TimeToNextTick => _clock.TimeToNextTick;
+        public void StartRom(byte[] romBytes)
+        {
+            var rom = new ROM(romBytes);
+            Setup(rom);
+        }
 
         public void Update(double dt)
         {
-            _clock.Update(dt);
+            CPU.Step();
         }
 
-        private void StepCPU()
+        private void Setup(ROM rom)
         {
-            _cpu.Step();
+            var cpuMem = new Memory(13);
+            var ppuMem = new Memory(13);
+
+            var inernalRam = new byte[0x800];
+            var ppuRegisters = new byte[0x8];
+            var ioRegisters = new IORegisters();
+            var dummySpace = new byte[0x2000];
+            
+            ioRegisters.OAMWrite -= WriteOam;
+            ioRegisters.OAMWrite += WriteOam;
+
+            cpuMem.AddAddressSpace(0, 0b0000_0111_1111_1111, inernalRam);
+            cpuMem.AddAddressSpace(1, 0b0000_0000_0000_0111, ppuRegisters);
+            cpuMem.AddAddressSpace(2, ioRegisters);
+            cpuMem.AddAddressSpace(3, 0x1FFF, dummySpace);
+            cpuMem.AddAddressSpace(4, 0x1FFF, dummySpace);
+            cpuMem.AddAddressSpace(5, 0x1FFF, dummySpace);
+            cpuMem.AddAddressSpace(6, 0x1FFF, dummySpace);
+            cpuMem.AddAddressSpace(7, 0x1FFF, dummySpace);
+
+            Mappers.AddRomMem(rom, cpuMem, ppuMem);
+
+            CPU = new CPU(cpuMem);
+            PPU = new PPU(ppuMem, new PPURegisters(ppuRegisters));
         }
 
-        private void StepPPU()
+        private void WriteOam(byte address)
         {
+            int startAdddress = address << 8;
+            var endAddresss = startAdddress + 0x100;
+            for (var cpuI = startAdddress; cpuI < endAddresss; cpuI++)
+            {
+                var oamI = cpuI - startAdddress;
+                PPU.OAM[oamI] = CPU.Ram[cpuI];
+            }
         }
     }
 }

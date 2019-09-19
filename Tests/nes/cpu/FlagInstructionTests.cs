@@ -10,7 +10,7 @@ namespace Tests.nes.cpu
 
         public FlagInstructionTests()
         {
-            _cpu = new CPU(new RAM());
+            _cpu = new CPU(new TestRAM());
         }
 
         [Theory]
@@ -23,7 +23,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, flag);
+            FlagAssert.AssertFlagSet(_cpu, flag);
         }
 
         [Theory]
@@ -38,7 +38,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, flag);
+            FlagAssert.AssertFlagCleared(_cpu, flag);
         }
     }
 }

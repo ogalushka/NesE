@@ -2,21 +2,21 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class BranchOnFlagClear : IOpCode
+    public class BranchOnFlagClear : Operation
     {
         private readonly PFlag _flag;
 
-        public BranchOnFlagClear(PFlag flag)
+        public BranchOnFlagClear(CPU cpu, PFlag flag) : base(cpu)
         {
             _flag = flag;
         }
 
-        public void Execute(CPU cpu, IAddressing addresing)
+        public override void Execute(BaseAddressAccessor addresing)
         {
-            var value = (sbyte)addresing.GetValue(cpu);
-            if (!cpu.GetFlag(_flag))
+            var value = (sbyte)addresing.GetValue();
+            if (!CPU.GetFlag(_flag))
             {
-                cpu.PC = (ushort)(cpu.PC + value);
+                CPU.PC = (ushort)(CPU.PC + value);
             }
         }
     }

@@ -1,26 +1,25 @@
-﻿using System;
-using NesE.nes.cpu.addressign;
+﻿using NesE.nes.cpu.addressign;
 
 namespace NesE.nes.cpu.opcode
 {
-    public class Compare : IOpCode
+    public class Compare : Operation
     {
-        private readonly Func<CPU, byte> _registerValue;
+        private readonly BaseAddressAccessor _registerValue;
 
-        public Compare(Func<CPU, byte> getter)
+        public Compare(CPU cpu, BaseAddressAccessor getter) : base(cpu)
         {
             _registerValue = getter;
         }
 
-        public void Execute(CPU cpu, IAddressing addresing)
+        public override void Execute(BaseAddressAccessor addresing)
         {
-            var register = 0b1_0000_0000 | _registerValue(cpu);
-            var memory = addresing.GetValue(cpu);
+            var register = 0b1_0000_0000 | _registerValue.GetValue();
+            var memory = addresing.GetValue();
 
             var result = register - memory;
-            FlagChecker.SetZero(cpu, (byte)result);
-            FlagChecker.SetNegative(cpu, (byte)result);
-            FlagChecker.SetCarry(cpu, result);
+            SetZero((byte)result);
+            SetNegative((byte)result);
+            SetCarry(result);
         }
     }
 }

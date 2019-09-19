@@ -5,18 +5,19 @@ namespace NesE.nes.cpu
 {
     public class Instruction
     {
-        public readonly IOpCode Opcode;
-        public readonly IAddressing Addressing;
+        private readonly Operation _opcode;
+        private readonly BaseAddressAccessor _addressing;
 
-        public Instruction(IOpCode opcode, IAddressing addressing)
+        public Instruction(Operation opcode, BaseAddressAccessor addressing)
         {
-            Opcode = opcode;
-            Addressing = addressing;
+            _opcode = opcode;
+            _addressing = addressing;
         }
 
-        public void Execute(CPU cpu)
+        public void Execute()
         {
-            Opcode.Execute(cpu, Addressing);
+            _addressing.Reset();
+            _opcode.Execute(_addressing);
         }
     }
 }

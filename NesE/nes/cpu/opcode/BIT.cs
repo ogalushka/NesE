@@ -2,22 +2,26 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class BIT : IOpCode
+    public class BIT : Operation
     {
-        public void Execute(CPU cpu, IAddressing addresing)
+        public BIT(CPU cpu) : base(cpu)
         {
-            var value = addresing.GetValue(cpu);
-            var result = (byte)(cpu.A & value);
+        }
 
-            FlagChecker.SetNegative(cpu, value);
-            FlagChecker.SetZero(cpu, result);
+        public override void Execute(BaseAddressAccessor addresing)
+        {
+            var value = addresing.GetValue();
+            var result = (byte)(CPU.A & value);
+
+            SetNegative(value);
+            SetZero(result);
             if ((value & 0b0100_0000) != 0)
             {
-                cpu.SetFlag(PFlag.V);
+                CPU.SetFlag(PFlag.V);
             }
             else
             {
-                cpu.ClearFlag(PFlag.V);
+                CPU.ClearFlag(PFlag.V);
             }
         }
     }

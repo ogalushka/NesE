@@ -1,6 +1,11 @@
-﻿using NesE.nes;
+﻿using NesE.emu;
+using NesE.nes;
+using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
-using System.Diagnostics;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace NesE
 {
@@ -8,22 +13,44 @@ namespace NesE
     {
         static void Main(string[] args)
         {
-            //Window w = new Window(new VideoMode(800, 600), "Test");
-            //w.Closed += (s, e) => w.Close();
-            var nes = new Nes();
-            var stopwatch = new Stopwatch();
-            double dt = 0;
-            while (/*w.IsOpen*/ true)
+            var pathToRom = GetAvailableRoms().FirstOrDefault();
+            if (string.IsNullOrEmpty(pathToRom))
             {
-                stopwatch.Stop();
-                dt = stopwatch.Elapsed.TotalSeconds;
-                stopwatch.Reset();
-                stopwatch.Start();
-
-                //w.WaitAndDispatchEvents();
-                nes.Update(dt);
-                //Debug.WriteLine(dt);
+                throw new Exception("no rom found");
             }
+
+            var romData = File.ReadAllBytes(pathToRom);
+            var console = new Nes();
+            console.StartRom(romData);
+
+            const int width = 128;
+            const int height = 256;
+
+            var pixels = new byte[width * height * 4];
+            var texture = new Texture(width, height);
+            var sprite = new Sprite(texture);
+            RenderWindow w = new RenderWindow(new VideoMode(800, 600), "Test");
+            sprite.Scale = new Vector2f(2, 2);
+            sprite.Position = new Vector2f(w.Size.X - sprite.GetGlobalBounds().Width, w.Size.Y - sprite.GetGlobalBounds().Height);
+
+            w.Closed += (s, e) => w.Close();
+
+            while (w.IsOpen)
+            {
+                w.WaitAndDispatchEvents();
+
+                w.Clear();
+                console.Update(0);
+                DebugDraws.DrawChrRom(console.PPU.Memory, pixels, 0, 0x2000, width);
+                texture.Update(pixels);
+                w.Draw(sprite);
+                w.Display();
+            }
+        }
+
+        static string[] GetAvailableRoms()
+        {
+            return Directory.EnumerateFiles("rom/", "*.nes").ToArray();
         }
     }
 }

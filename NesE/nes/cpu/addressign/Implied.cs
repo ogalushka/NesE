@@ -1,10 +1,22 @@
 ﻿namespace NesE.nes.cpu.addressign
 {
-    public class Implied : IAddressing
+    public class Implied : BaseAddressAccessor
     {
-        public byte GetValue(CPU cpu)
+        public Implied(CPU cpu) : base(cpu)
+        {
+        }
+
+        public override byte GetValue()
         {
             return 0;
+        }
+
+        public override void Reset()
+        {
+        }
+
+        public override void SetValue(byte value)
+        {
         }
     }
 }

@@ -1,33 +1,50 @@
 ﻿using NesE.nes.cpu.addressign;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NesE.nes.cpu.opcode
 {
-    public class SBC : IOpCode
+    public class SBC : Operation
     {
-        private ADC _addWithCarry = new ADC();
-        private InvertedValueAddressing _invertedValueAddressing = new InvertedValueAddressing();
+        private readonly ADC _addWithCarry;
+        private readonly InvertedValueAddressing _invertedValueAddressing;
 
-        public void Execute(CPU cpu, IAddressing addressing)
+        public SBC(CPU cpu) : base(cpu)
         {
-            _invertedValueAddressing.SetAddresing(addressing);
-            _addWithCarry.Execute(cpu, _invertedValueAddressing);
+            _addWithCarry = new ADC(cpu);
+            _invertedValueAddressing = new InvertedValueAddressing(cpu);
         }
 
-        private class InvertedValueAddressing : IAddressing
+        public override void Execute(BaseAddressAccessor addressing)
         {
-            private IAddressing _addressing;
+            _invertedValueAddressing.SetAddressing(addressing);
+            _addWithCarry.Execute(_invertedValueAddressing);
+        }
 
-            public void SetAddresing(IAddressing addressing)
+        private class InvertedValueAddressing : BaseAddressAccessor
+        {
+            private BaseAddressAccessor _addressing;
+
+            public InvertedValueAddressing(CPU cpu) : base(cpu)
+            {
+            }
+
+            public void SetAddressing(BaseAddressAccessor addressing)
             {
                 _addressing = addressing;
             }
 
-            public byte GetValue(CPU cpu)
+            public override byte GetValue()
             {
-                return (byte)~_addressing.GetValue(cpu);
+                return (byte)~_addressing.GetValue();
+            }
+
+            public override void Reset()
+            {
+                _addressing.Reset();
+            }
+
+            public override void SetValue(byte value)
+            {
+                _addressing.SetValue(value);
             }
         }
     }

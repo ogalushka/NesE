@@ -117,5 +117,74 @@
         public const byte DEC_ZPX = 0xD6;
         public const byte DEC_ABS = 0xCE;
         public const byte DEC_ABX = 0xDE;
+
+        public const byte DEX_IMP = 0xCA;
+        public const byte DEY_IMP = 0x88;
+
+        public const byte INC_ZEP = 0xE6;
+        public const byte INC_ZPX = 0xF6;
+        public const byte INC_ABS = 0xEE;
+        public const byte INC_ABX = 0xFE;
+
+        public const byte INX_IMP = 0xE8;
+        public const byte INY_IMP = 0xC8;
+
+        public const byte JMP_ABS = 0x4C;
+        public const byte JMP_IND = 0x6C;
+
+        public const byte JSR_ABS = 0x20;
+        public const byte RTS_IMP = 0x60;
+        public const byte RTI_IMP = 0x40;
+
+        public const byte LDA_IMM = 0xA9;
+        public const byte LDA_ZEP = 0xA5;
+        public const byte LDA_ZPX = 0xB5;
+        public const byte LDA_ABS = 0xAD;
+        public const byte LDA_ABX = 0xBD;
+        public const byte LDA_ABY = 0xB9;
+        public const byte LDA_IDX = 0xA1;
+        public const byte LDA_IDY = 0xB1;
+
+        public const byte LDX_IMM = 0xA2;
+        public const byte LDX_ZEP = 0xA6;
+        public const byte LDX_ZPY = 0xB6;
+        public const byte LDX_ABS = 0xAE;
+        public const byte LDX_ABY = 0xBE;
+
+        public const byte LDY_IMM = 0xA0;
+        public const byte LDY_ZEP = 0xA4;
+        public const byte LDY_ZPX = 0xB4;
+        public const byte LDY_ABS = 0xAC;
+        public const byte LDY_ABX = 0xBC;
+
+        public const byte NOP_IMP = 0xEA;
+
+        public const byte PHA_IMP = 0x48;
+        public const byte PHP_IMP = 0x08;
+        public const byte PLA_IMP = 0x68;
+        public const byte PLP_IMP = 0x28;
+
+        public const byte STA_ZEP = 0x85;
+        public const byte STA_ZPX = 0x95;
+        public const byte STA_ABS = 0x8D;
+        public const byte STA_ABX = 0x9D;
+        public const byte STA_ABY = 0x99;
+        public const byte STA_IDX = 0x81;
+        public const byte STA_IDY = 0x91;
+
+        public const byte STX_ZEP = 0x86;
+        public const byte STX_ZPY = 0x96;
+        public const byte STX_ABS = 0x8E;
+
+        public const byte STY_ZEP = 0x84;
+        public const byte STY_ZPX = 0x94;
+        public const byte STY_ABS = 0x8C;
+
+        public const byte TAX_IMP = 0xAA;
+        public const byte TAY_IMP = 0xA8;
+        public const byte TSX_IMP = 0xBA;
+        public const byte TXA_IMP = 0x8A;
+        public const byte TXS_IMP = 0x9A;
+        public const byte TYA_IMP = 0x98;
     }
 }

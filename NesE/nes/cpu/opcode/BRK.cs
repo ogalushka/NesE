@@ -2,22 +2,24 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class BRK : IOpCode
+    public class BRK : Operation
     {
-        public void Execute(CPU cpu, IAddressing addresing)
+        public BRK(CPU cpu) : base(cpu)
         {
-            cpu.SetFlag(PFlag.B);
-            var lowerPC = cpu.Ram[0xFFFE];
-            var higherPC = cpu.Ram[0xFFFF];
+        }
+
+        public override void Execute(BaseAddressAccessor addresing)
+        {
+            var lowerPC = CPU.Ram[0xFFFE];
+            var higherPC = CPU.Ram[0xFFFF];
 
             ushort newPC = (ushort)((higherPC << 8) | lowerPC);
 
-            cpu.PutOnStack((byte)(cpu.PC >> 8));
-            cpu.PutOnStack((byte)cpu.PC);
-            cpu.PutOnStack((byte)cpu.P);
+            CPU.PutOnStack((byte)(CPU.PC >> 8));
+            CPU.PutOnStack((byte)CPU.PC);
+            CPU.PutOnStack((byte)(CPU.P | PFlag.B | PFlag._));
 
-            cpu.PC = newPC;
-            
+            CPU.PC = newPC;
         }
     }
 }

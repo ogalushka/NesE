@@ -13,7 +13,7 @@ namespace Tests.nes.cpu
 
         public CompareTests()
         {
-            _cpu = new CPU(new RAM());
+            _cpu = new CPU(new TestRAM());
         }
 
         private class CompareTestData : IEnumerable<object[]>
@@ -65,7 +65,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
         }
 
         [Theory]
@@ -79,7 +79,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
         }
 
 
@@ -94,7 +94,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.C);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.C);
         }
 
         [Theory]
@@ -108,7 +108,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.C);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.C);
         }
 
         [Theory]
@@ -122,7 +122,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.C);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.C);
         }
 
         [Theory]
@@ -136,7 +136,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
         }
 
         [Theory]
@@ -150,7 +150,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
         }
     }
 }

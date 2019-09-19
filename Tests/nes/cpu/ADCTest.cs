@@ -1,6 +1,5 @@
 ﻿using NesE.nes;
 using NesE.nes.cpu;
-using NesE.nes.cpu.opcode;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,12 +9,12 @@ namespace Tests.nes.cpu
 {
     public class ADCTest
     {
-        public RAM _ram;
+        public TestRAM _ram;
         public CPU _cpu;
 
         public ADCTest()
         {
-            _ram = new RAM();
+            _ram = new TestRAM();
             _cpu = new CPU(_ram);
             _ram[0] = OP.ADC_IMM;
         }
@@ -82,7 +81,7 @@ namespace Tests.nes.cpu
         {
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
         }
 
         [Fact]
@@ -92,7 +91,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
         }
 
         [Fact]
@@ -103,7 +102,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.C);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.C);
         }
 
         [Fact]
@@ -114,7 +113,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.C);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.C);
         }
 
         [Theory]
@@ -127,7 +126,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.V);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.V);
         }
 
         [Theory]
@@ -140,7 +139,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.V);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.V);
         }
 
         [Fact]
@@ -150,7 +149,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
         }
 
         [Fact]
@@ -158,7 +157,7 @@ namespace Tests.nes.cpu
         {
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
         }
     }
 }

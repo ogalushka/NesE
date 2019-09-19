@@ -1,36 +1,52 @@
-﻿using NesE.nes.cpu.addressign;
-using NesE.nes.cpu.opcode;
-using System.Collections.Generic;
+﻿using NesE.nes.memory;
+using System;
+using System.Diagnostics;
 
 namespace NesE.nes.cpu
 {
     public class CPU
     {
-        public readonly RAM Ram;
+        public bool IRQ = false;
+        public bool NMI = false;
 
         public byte A;
         public byte X;
         public byte Y;
 
-        public ushort S;
+        public byte S;
         public PFlag P;
 
         public ushort PC;
 
-        public CPU(RAM ram)
+        public readonly IMemory Ram;
+        private readonly Instructions _instructions;
+
+        public CPU(IMemory ram)
         {
             Ram = ram;
+            _instructions = new Instructions(this);
             Reset();
         }
 
         public void Step()
         {
-            Instructions.Get(ReadNext()).Execute(this);
+            if (IRQ && !GetFlag(PFlag.I))
+            {
+                _instructions.IRQ.Execute();
+            }
+            else if (NMI)
+            {
+                _instructions.UnmaskedIRQ.Execute();
+            }
+            else
+            {
+                _instructions.Get(ReadNext()).Execute();
+            }
         }
 
         public void Reset()
         {
-            S = 0x01ff;
+            S = 0xff;
             PC = (ushort)(Ram[0xFFFC] | Ram[0xFFFD] << 8);
             P |= PFlag.I | PFlag._;
         }
@@ -42,18 +58,20 @@ namespace NesE.nes.cpu
 
         public void PutOnStack(byte value)
         {
-            Ram[S] = value;
-            S--;
+            Ram[0x100 | S--] = value;
         }
 
-        public byte PullFromStack()
+        public byte PullFromStack() 
         {
-            S++;
-            return Ram[S];
+            return Ram[0x100 | ++S];
         }
 
         public void SetFlag(PFlag flag)
         {
+            if (flag == PFlag.B || flag == PFlag._)
+            {
+                throw new Exception($"Can't set flag {flag}. Not a real flag");
+            }
             P |= flag;
         }
 

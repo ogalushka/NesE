@@ -2,18 +2,22 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class ROL : IOpCode
+    public class ROL : Operation
     {
-        public void Execute(CPU cpu, IAddressing addresing)
+        public ROL(CPU cpu) : base(cpu)
         {
-            var value = addresing.GetValue(cpu);
+        }
+
+        public override void Execute(BaseAddressAccessor addressAccessor)
+        {
+            var value = addressAccessor.GetValue();
 
             var result = value << 1;
-            result |= (int)(cpu.P & PFlag.C);
-            cpu.A = (byte)result;
-            FlagChecker.SetCarry(cpu, result);
-            FlagChecker.SetNegative(cpu, cpu.A);
-            FlagChecker.SetZero(cpu, cpu.A);
+            result |= (int)(CPU.P & PFlag.C);
+            addressAccessor.SetValue((byte)result);
+            SetCarry(result);
+            SetNegative((byte)result);
+            SetZero((byte)result);
         }
     }
 }

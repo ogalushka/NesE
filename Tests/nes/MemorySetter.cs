@@ -9,6 +9,26 @@ namespace Tests.nes
             cpu.A = value;
         }
 
+        public static void XRegister(byte value, CPU cpu)
+        {
+            cpu.X = value;
+        }
+
+        public static void YRegister(byte value, CPU cpu)
+        {
+            cpu.Y = value;
+        }
+
+        public static void StatusReg(byte value, CPU cpu)
+        {
+            cpu.P = (PFlag)value;
+        }
+
+        public static void StackPointer(byte value, CPU cpu)
+        {
+            cpu.S = value;
+        }
+
         public static void Immediate(byte value, CPU cpu)
         {
             cpu.Ram[1] = value;
@@ -27,6 +47,14 @@ namespace Tests.nes
             cpu.Ram[1] = address;
             cpu.X = 0x01;
             cpu.Ram[address + cpu.X] = value;
+        }
+
+        public static void ZeroPageY(byte value, CPU cpu)
+        {
+            byte address = 0x50;
+            cpu.Ram[1] = address;
+            cpu.Y = 0x01;
+            cpu.Ram[address + cpu.Y] = value;
         }
 
         public static void Absolute(byte value, CPU cpu)
@@ -62,6 +90,25 @@ namespace Tests.nes
             cpu.Ram[1] = addressLow;
             cpu.Ram[2] = addressHigh;
             cpu.Ram[address] = value;
+        }
+
+        public static void ImmidiateTwoByte(ushort value, CPU cpu)
+        {
+            cpu.Ram[1] = (byte)value;
+            cpu.Ram[2] = (byte)(value >> 8);
+        }
+
+        public static void Indirect(ushort value, CPU cpu)
+        {
+            byte addressLow = 0x50;
+            byte addressHigh = 0x40;
+            ushort address = 0x4050;
+
+            cpu.Ram[1] = addressLow;
+            cpu.Ram[2] = addressHigh;
+
+            cpu.Ram[address] = (byte)value;
+            cpu.Ram[address + 1] = (byte)(value >> 8);
         }
 
         public static void IndirectX(byte value, CPU cpu)

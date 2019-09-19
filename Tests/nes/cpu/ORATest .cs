@@ -13,7 +13,7 @@ namespace Tests.nes.cpu
         private CPU _cpu;
         public ORATest()
         {
-            _cpu = new CPU(new RAM());
+            _cpu = new CPU(new TestRAM());
             _cpu.Ram[0] = OP.EOR_IMM;
         }
 
@@ -53,7 +53,7 @@ namespace Tests.nes.cpu
         {
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
         }
 
         [Fact]
@@ -72,7 +72,7 @@ namespace Tests.nes.cpu
         {
             _cpu.Step();
 
-            FlagAssert.Cleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Tests.nes.cpu
 
             _cpu.Step();
 
-            FlagAssert.Set(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
         }
     }
 }

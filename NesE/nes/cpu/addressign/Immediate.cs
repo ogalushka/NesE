@@ -1,10 +1,23 @@
 ﻿namespace NesE.nes.cpu.addressign
 {
-    public class Immediate : IAddressing
+    public class Immediate : BaseAddressAccessor
     {
-        public byte GetValue(CPU cpu)
+        public Immediate(CPU cpu) : base(cpu)
         {
-            return cpu.ReadNext();
+        }
+
+        public override byte GetValue()
+        {
+            return CPU.ReadNext();
+        }
+
+        public override void Reset()
+        {
+        }
+
+        public override void SetValue(byte value)
+        {
+            throw new WriteToReadOnlyAccessorException();
         }
     }
 }

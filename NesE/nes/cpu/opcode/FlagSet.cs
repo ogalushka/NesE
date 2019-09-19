@@ -2,18 +2,18 @@
 
 namespace NesE.nes.cpu.opcode
 {
-    public class FlagSet : IOpCode
+    public class FlagSet : Operation
     {
         private PFlag _flag;
 
-        public FlagSet(PFlag flag)
+        public FlagSet(CPU cpu, PFlag flag) : base(cpu)
         {
             _flag = flag;
         }
 
-        public void Execute(CPU cpu, IAddressing addresing)
+        public override void Execute(BaseAddressAccessor addresing)
         {
-            cpu.SetFlag(_flag);
+            CPU.SetFlag(_flag);
         }
     }
 }

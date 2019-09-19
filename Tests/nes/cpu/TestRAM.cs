@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using NesE.nes.memory;
 
 namespace NesE.nes
 {
-    public class RAM
+    public class TestRAM : IMemory
     {
         private byte[] _memory = new byte[0x10000];
 

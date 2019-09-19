@@ -10,7 +10,7 @@ namespace Tests.nes.cpu
         public void ShouldSetPCToValueFromFFFCFFFD()
         {
             const ushort Expected = 0x1234;
-            var mem = new RAM();
+            var mem = new TestRAM();
             mem[0xFFFC] = Expected & 0xFF;
             mem[0xFFFD] = Expected >> 8;
 

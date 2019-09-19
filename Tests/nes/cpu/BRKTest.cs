@@ -10,7 +10,7 @@ namespace Tests.nes.cpu
 
         public BRKTest()
         {
-            _cpu = new CPU(new RAM());
+            _cpu = new CPU(new TestRAM());
         }
 
         [Fact]
@@ -29,24 +29,14 @@ namespace Tests.nes.cpu
         }
 
         [Fact]
-        public void ShouldSetFlag()
-        {
-            _cpu.Ram[0] = OP.BRK_IMP;
-
-            _cpu.Step();
-
-            FlagAssert.Set(_cpu, PFlag.B);
-        }
-
-        [Fact]
         public void ShouldSavePC()
         {
             _cpu.PC = 0x1234;
             _cpu.Ram[0x1234] = OP.BRK_IMP;
 
-            var pointLower = _cpu.S - 1;
+            var pointLower = 0x100 | (_cpu.S - 1);
             var valueLower = 0x35;
-            var pointHigher = _cpu.S;
+            var pointHigher = 0x100 | _cpu.S;
             var valueHigher = 0x12;
 
             _cpu.Step();
@@ -56,11 +46,11 @@ namespace Tests.nes.cpu
         }
 
         [Fact]
-        public void ShouldSaveP()
+        public void ShouldSavePWithFlag()
         {
             _cpu.Ram[0] = OP.BRK_IMP;
             _cpu.SetFlag(PFlag.C);
-            var P = (byte)(_cpu.P | PFlag.B);
+            var P = (byte)(_cpu.P | PFlag.B | PFlag._);
 
             _cpu.Step();
 

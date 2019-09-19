@@ -1,10 +1,23 @@
 ﻿namespace NesE.nes.cpu.addressign
 {
-    public class Accumulator : IAddressing
+    public class Accumulator : BaseAddressAccessor
     {
-        public byte GetValue(CPU cpu)
+        public Accumulator(CPU cpu) : base(cpu)
         {
-            return cpu.A;
+        }
+
+        public override byte GetValue()
+        {
+            return CPU.A;
+        }
+
+        public override void Reset()
+        {
+        }
+
+        public override void SetValue(byte value)
+        {
+            CPU.A = value;
         }
     }
 }

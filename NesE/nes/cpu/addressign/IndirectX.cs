@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NesE.nes.cpu.addressign
+﻿namespace NesE.nes.cpu.addressign
 {
-    public class IndirectX : IAddressing
+    public class IndirectX : IAddressResolver
     {
-        public byte GetValue(CPU cpu)
+        public ushort GetAddress(CPU cpu)
         {
             byte lowByte = cpu.ReadNext();
             lowByte = (byte)(lowByte + cpu.X);
@@ -15,7 +11,7 @@ namespace NesE.nes.cpu.addressign
             var low = cpu.Ram[lowByte];
             var high = cpu.Ram[highByte];
             var target = (high << 8) | low;
-            return cpu.Ram[target];
+            return (ushort)target;
         }
     }
 }
