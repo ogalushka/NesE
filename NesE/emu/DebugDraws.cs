@@ -24,8 +24,8 @@ namespace NesE.emu
             {
                 for (var lineIndex = 0; lineIndex < TileSize; lineIndex++)
                 {
-                    var lineByte1 = ppuMem[tileIndex + lineIndex];
-                    var lineByte2 = ppuMem[tileIndex + lineIndex + TileSize];
+                    var lineByte1 = ppuMem.Get(tileIndex + lineIndex);
+                    var lineByte2 = ppuMem.Get(tileIndex + lineIndex + TileSize);
 
                     for (var pixelIndex = TileSize - 1; pixelIndex >= 0; pixelIndex--)
                     {

@@ -10,8 +10,8 @@ namespace NesE.nes.cpu.opcode
 
         public override void Execute(BaseAddressAccessor addresing)
         {
-            var lowerPC = CPU.Ram[0xFFFE];
-            var higherPC = CPU.Ram[0xFFFF];
+            var lowerPC = CPU.Ram.Get(0xFFFE);
+            var higherPC = CPU.Ram.Get(0xFFFF);
 
             ushort newPC = (ushort)((higherPC << 8) | lowerPC);
 

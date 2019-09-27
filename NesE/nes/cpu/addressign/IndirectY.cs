@@ -6,8 +6,8 @@
         {
             var lowerByte = cpu.ReadNext();
             byte higherByte = (byte)(lowerByte + 1);
-            var lower = cpu.Ram[lowerByte];
-            var higher = cpu.Ram[higherByte];
+            var lower = cpu.Ram.Get(lowerByte);
+            var higher = cpu.Ram.Get(higherByte);
             var address = (higher << 8) | lower;
             address += cpu.Y;
             return (ushort)address;

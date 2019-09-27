@@ -16,5 +16,15 @@
             get { return _memory[i & _mask]; }
             set { _memory[i & _mask] = value; }
         }
+
+        public byte Get(int index)
+        {
+            return _memory[index & _mask];
+        }
+
+        public void Set(int index, byte value)
+        {
+            _memory[index & _mask] = value;
+        }
     }
 }

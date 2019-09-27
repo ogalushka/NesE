@@ -61,7 +61,7 @@ namespace NesE.nes
             for (var cpuI = startAdddress; cpuI < endAddresss; cpuI++)
             {
                 var oamI = cpuI - startAdddress;
-                PPU.OAM[oamI] = CPU.Ram[cpuI];
+                PPU.OAM[oamI] = CPU.Ram.Get(cpuI);
             }
         }
     }

@@ -15,5 +15,18 @@ namespace NesE.nes.memory
                 }
             }
         }
+
+        public void Set(int index, byte value)
+        {
+            if (index == 0x4014)
+            {
+                OAMWrite(value);
+            }
+        }
+
+        public byte Get(int index)
+        {
+            return 0;
+        }
     }
 }

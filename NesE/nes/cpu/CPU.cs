@@ -1,6 +1,5 @@
 ﻿using NesE.nes.memory;
 using System;
-using System.Diagnostics;
 
 namespace NesE.nes.cpu
 {
@@ -47,23 +46,23 @@ namespace NesE.nes.cpu
         public void Reset()
         {
             S = 0xff;
-            PC = (ushort)(Ram[0xFFFC] | Ram[0xFFFD] << 8);
+            PC = (ushort)(Ram.Get(0xFFFC) | Ram.Get(0xFFFD) << 8);
             P |= PFlag.I | PFlag._;
         }
 
         public byte ReadNext()
         {
-            return Ram[PC++];
+            return Ram.Get(PC++);
         }
 
         public void PutOnStack(byte value)
         {
-            Ram[0x100 | S--] = value;
+            Ram.Set(0x100 | S--, value);
         }
 
         public byte PullFromStack() 
         {
-            return Ram[0x100 | ++S];
+            return Ram.Get(0x100 | ++S);
         }
 
         public void SetFlag(PFlag flag)

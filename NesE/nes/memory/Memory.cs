@@ -37,19 +37,19 @@ namespace NesE.nes.memory
             }
         }
 
-        /*public void Set(int index, byte value)
+        public void Set(int index, byte value)
         {
-            _addressSpaces[(i >> _bankAddresShift)][i] = value;
+            _addressSpaces[(index >> _bankAddresShift)].Set(index, value);
         }
 
         public byte Get(int index)
         {
-            return _addressSpaces[(i >> _bankAddresShift)][index];
-        }*/
+            return _addressSpaces[(index >> _bankAddresShift)].Get(index);
+        }
 
-        public byte this[int i] {
-            get { return _addressSpaces[(i >> _bankAddresShift)][i]; }
-            set { _addressSpaces[(i >> _bankAddresShift)][i] = value; }
+        public byte this[int index] {
+            get { return _addressSpaces[(index >> _bankAddresShift)].Get(index); }
+            set { _addressSpaces[(index >> _bankAddresShift)].Set(index, value); }
         }
     }
 }

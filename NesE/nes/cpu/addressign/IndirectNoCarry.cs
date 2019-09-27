@@ -8,9 +8,9 @@
             byte highByte = cpu.ReadNext();
             var target = (highByte << 8) | lowByte;
 
-            var low = cpu.Ram[(highByte << 8) | lowByte];
+            var low = cpu.Ram.Get((highByte << 8) | lowByte);
             lowByte += 1;
-            var high = cpu.Ram[(highByte << 8) | lowByte];
+            var high = cpu.Ram.Get((highByte << 8) | lowByte);
             return (ushort)((high << 8) | low);
         }
     }
