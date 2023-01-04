@@ -19,12 +19,12 @@
 
         public override byte GetValue()
         {
-            return CPU.Ram.Get(GetAddress());
+            return CPU.RAM.Get(GetAddress());
         }
 
         public override void SetValue(byte value)
         {
-            CPU.Ram.Set(GetAddress(), value);
+            CPU.RAM.Set(GetAddress(), value);
         }
 
         private ushort GetAddress()

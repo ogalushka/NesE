@@ -10,11 +10,11 @@ namespace Tests.nes.cpu
         {
             const PFlag ExpectedP = PFlag.C | PFlag.Z | PFlag.N | PFlag._;
             const ushort ExpectedPC = 0x1234;
-            CPU.Ram[0] = OP.RTI_IMP;
+            CPU.RAM[0] = OP.RTI_IMP;
 
-            CPU.Ram[0x100 | CPU.S--] = 0x12;
-            CPU.Ram[0x100 | CPU.S--] = 0x34;
-            CPU.Ram[0x100 | CPU.S--] = (byte)(ExpectedP | PFlag.B | PFlag._);
+            CPU.RAM[0x100 | CPU.S--] = 0x12;
+            CPU.RAM[0x100 | CPU.S--] = 0x34;
+            CPU.RAM[0x100 | CPU.S--] = (byte)(ExpectedP | PFlag.B | PFlag._);
 
             CPU.Step();
 

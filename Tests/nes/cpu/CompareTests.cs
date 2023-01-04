@@ -7,15 +7,8 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class CompareTests
+    public class CompareTests : BaseCPUTest
     {
-        private readonly CPU _cpu;
-
-        public CompareTests()
-        {
-            _cpu = new CPU(new TestRAM());
-        }
-
         private class CompareTestData : IEnumerable<object[]>
         {
             public IEnumerator<object[]> GetEnumerator()
@@ -58,28 +51,28 @@ namespace Tests.nes.cpu
         [ClassData(typeof(CompareTestData))]
         public void ShouldSetZero(byte op, Action<byte, CPU> setMemoryValue, Action<byte, CPU> setRegisterValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Value = 0x14;
-            setMemoryValue(Value, _cpu);
-            setRegisterValue(Value, _cpu);
+            setMemoryValue(Value, CPU);
+            setRegisterValue(Value, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(CPU, PFlag.Z);
         }
 
         [Theory]
         [ClassData(typeof(CompareTestData))]
         public void ShouldClearZero(byte op, Action<byte, CPU> setMemoryValue, Action<byte, CPU> setRegisterValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Value = 0x14;
-            setMemoryValue(Value, _cpu);
-            setRegisterValue(Value + 1, _cpu);
+            setMemoryValue(Value, CPU);
+            setRegisterValue(Value + 1, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.Z);
         }
 
 
@@ -87,70 +80,70 @@ namespace Tests.nes.cpu
         [ClassData(typeof(CompareTestData))]
         public void ShouldSetCarryIfEqual(byte op, Action<byte, CPU> setMemoryValue, Action<byte, CPU> setRegisterValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Value = 0x14;
-            setMemoryValue(Value, _cpu);
-            setRegisterValue(Value, _cpu);
+            setMemoryValue(Value, CPU);
+            setRegisterValue(Value, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.C);
+            FlagAssert.AssertFlagSet(CPU, PFlag.C);
         }
 
         [Theory]
         [ClassData(typeof(CompareTestData))]
         public void ShouldSetCarryIfMore(byte op, Action<byte, CPU> setMemoryValue, Action<byte, CPU> setRegisterValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Value = 0x14;
-            setMemoryValue(Value, _cpu);
-            setRegisterValue(Value + 1, _cpu);
+            setMemoryValue(Value, CPU);
+            setRegisterValue(Value + 1, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.C);
+            FlagAssert.AssertFlagSet(CPU, PFlag.C);
         }
 
         [Theory]
         [ClassData(typeof(CompareTestData))]
         public void ShouldClearCarry(byte op, Action<byte, CPU> setMemoryValue, Action<byte, CPU> setRegisterValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Value = 0x14;
-            setMemoryValue(Value, _cpu);
-            setRegisterValue(Value - 1, _cpu);
+            setMemoryValue(Value, CPU);
+            setRegisterValue(Value - 1, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.C);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.C);
         }
 
         [Theory]
         [ClassData(typeof(CompareTestData))]
         public void ShouldSetNegative(byte op, Action<byte, CPU> setMemoryValue, Action<byte, CPU> setRegisterValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Value = 0x14;
-            setMemoryValue(Value, _cpu);
-            setRegisterValue(Value - 1, _cpu);
+            setMemoryValue(Value, CPU);
+            setRegisterValue(Value - 1, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(CPU, PFlag.N);
         }
 
         [Theory]
         [ClassData(typeof(CompareTestData))]
         public void ShouldClearNegative(byte op, Action<byte, CPU> setMemoryValue, Action<byte, CPU> setRegisterValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Value = 0x14;
-            setMemoryValue(Value, _cpu);
-            setRegisterValue(Value, _cpu);
+            setMemoryValue(Value, CPU);
+            setRegisterValue(Value, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.N);
         }
     }
 }

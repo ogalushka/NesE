@@ -7,7 +7,7 @@ namespace Tests.nes.cpu
     {
         public DEXTest() : base()
         {
-            CPU.Ram[0] = OP.DEX_IMP;
+            CPU.RAM[0] = OP.DEX_IMP;
         }
 
         [Fact]

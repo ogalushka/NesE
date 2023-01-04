@@ -22,8 +22,8 @@ namespace NesE.nes.cpu.opcode
             CPU.PutOnStack(pcl);
             CPU.PutOnStack((byte)CPU.P);
 
-            var newPCL = CPU.Ram.Get(_vectorPCL);
-            var newPCH = CPU.Ram.Get(_vectorPCH);
+            var newPCL = CPU.RAM.Get(_vectorPCL);
+            var newPCH = CPU.RAM.Get(_vectorPCH);
 
             CPU.PC = (ushort)(newPCH << 8 | newPCL);
             CPU.SetFlag(PFlag.I);

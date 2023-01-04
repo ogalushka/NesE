@@ -5,13 +5,8 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class BranchOnFlagTests
+    public class BranchOnFlagTests : BaseCPUTest
     {
-        private readonly CPU _cpu;
-        public BranchOnFlagTests()
-        {
-            _cpu = new CPU(new TestRAM());
-        }
 
         [Theory]
         [InlineData(OP.BCS_REL, 0x10, PFlag.C)]
@@ -25,13 +20,13 @@ namespace Tests.nes.cpu
         public void ShouldBranchIfSet(byte op, sbyte value, PFlag flag)
         {
             var ExpectedPC = 2 + value;
-            _cpu.Ram[0] = op;
-            _cpu.Ram[1] = (byte)value;
-            _cpu.SetFlag(flag);
+            CPU.RAM[0] = op;
+            CPU.RAM[1] = (byte)value;
+            CPU.SetFlag(flag);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedPC, _cpu.PC);
+            Assert.Equal(ExpectedPC, CPU.PC);
         }
 
         [Theory]
@@ -42,13 +37,13 @@ namespace Tests.nes.cpu
         public void ShouldNotBranchIfClear(byte op, PFlag flag)
         {
             var ExpectedPC = 2;
-            _cpu.Ram[0] = op;
-            _cpu.Ram[1] = 100;
-            _cpu.ClearFlag(flag);
+            CPU.RAM[0] = op;
+            CPU.RAM[1] = 100;
+            CPU.ClearFlag(flag);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedPC, _cpu.PC);
+            Assert.Equal(ExpectedPC, CPU.PC);
         }
 
         [Theory]
@@ -63,13 +58,13 @@ namespace Tests.nes.cpu
         public void ShouldBranchIfClear(byte op, sbyte value, PFlag flag)
         {
             var ExpectedPC = 2 + value;
-            _cpu.Ram[0] = op;
-            _cpu.Ram[1] = (byte)value;
-            _cpu.ClearFlag(flag);
+            CPU.RAM[0] = op;
+            CPU.RAM[1] = (byte)value;
+            CPU.ClearFlag(flag);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedPC, _cpu.PC);
+            Assert.Equal(ExpectedPC, CPU.PC);
         }
 
         [Theory]
@@ -80,13 +75,13 @@ namespace Tests.nes.cpu
         public void ShouldNotBranchIfSet(byte op, PFlag flag)
         {
             var ExpectedPC = 2;
-            _cpu.Ram[0] = op;
-            _cpu.Ram[1] = 100;
-            _cpu.SetFlag(flag);
+            CPU.RAM[0] = op;
+            CPU.RAM[1] = 100;
+            CPU.SetFlag(flag);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedPC, _cpu.PC);
+            Assert.Equal(ExpectedPC, CPU.PC);
         }
     }
 }

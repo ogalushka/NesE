@@ -14,7 +14,7 @@ namespace Tests.nes.cpu
             mem[0xFFFC] = Expected & 0xFF;
             mem[0xFFFD] = Expected >> 8;
 
-            var cpu = new CPU(mem);
+            var cpu = new CPU(mem, new Interupts());
 
             cpu.Reset();
             Assert.Equal(Expected, cpu.PC);

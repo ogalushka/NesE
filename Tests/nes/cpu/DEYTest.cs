@@ -7,7 +7,7 @@ namespace Tests.nes.cpu
     {
         public DEYTest() : base()
         {
-            CPU.Ram[0] = OP.DEY_IMP;
+            CPU.RAM[0] = OP.DEY_IMP;
         }
 
         [Fact]

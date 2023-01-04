@@ -4,26 +4,19 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class FlagInstructionTests
+    public class FlagInstructionTests : BaseCPUTest
     {
-        private readonly CPU _cpu;
-
-        public FlagInstructionTests()
-        {
-            _cpu = new CPU(new TestRAM());
-        }
-
         [Theory]
         [InlineData(OP.SEC_IMP, PFlag.C)]
         [InlineData(OP.SED_IMP, PFlag.D)]
         [InlineData(OP.SEI_IMP, PFlag.I)]
         public void ShouldSetFlag(byte op, PFlag flag)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, flag);
+            FlagAssert.AssertFlagSet(CPU, flag);
         }
 
         [Theory]
@@ -33,12 +26,12 @@ namespace Tests.nes.cpu
         [InlineData(OP.CLV_IMP, PFlag.V)]
         public void ShouldClearFlag(byte op, PFlag flag)
         {
-            _cpu.Ram[0] = op;
-            _cpu.SetFlag(flag);
+            CPU.RAM[0] = op;
+            CPU.SetFlag(flag);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, flag);
+            FlagAssert.AssertFlagCleared(CPU, flag);
         }
     }
 }

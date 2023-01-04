@@ -38,7 +38,7 @@ namespace Tests.nes.cpu
         public void ShouldLoadDataToRegister(byte op, Action<byte, CPU> setMemory, Func<CPU, byte> getRegister)
         {
             const byte Expected = 0x44;
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             setMemory(Expected, CPU);
 
             CPU.Step();
@@ -51,7 +51,7 @@ namespace Tests.nes.cpu
         public void ShouldSetZeroFlag(byte op, Action<byte, CPU> setMemory, Func<CPU, byte> getRegister)
         {
             CPU.ClearFlag(PFlag.Z);
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             setMemory(0, CPU);
 
             CPU.Step();
@@ -64,7 +64,7 @@ namespace Tests.nes.cpu
         public void ShouldClearZeroFlag(byte op, Action<byte, CPU> setMemory, Func<CPU, byte> getRegister)
         {
             CPU.SetFlag(PFlag.Z);
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             setMemory(1, CPU);
 
             CPU.Step();
@@ -77,7 +77,7 @@ namespace Tests.nes.cpu
         public void ShouldSetNegativeFlag(byte op, Action<byte, CPU> setMemory, Func<CPU, byte> getRegister)
         {
             CPU.ClearFlag(PFlag.N);
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             setMemory(0b1000_0000, CPU);
 
             CPU.Step();
@@ -90,7 +90,7 @@ namespace Tests.nes.cpu
         public void ShouldClearNegativeFlag(byte op, Action<byte, CPU> setMemory, Func<CPU, byte> getRegister)
         {
             CPU.SetFlag(PFlag.N);
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             setMemory(1, CPU);
 
             CPU.Step();

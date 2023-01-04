@@ -7,15 +7,13 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class ADCTest
+    public class ADCTest : BaseCPUTest
     {
         public TestRAM _ram;
-        public CPU _cpu;
 
         public ADCTest()
         {
-            _ram = new TestRAM();
-            _cpu = new CPU(_ram);
+            _ram = CPU.RAM as TestRAM;
             _ram[0] = OP.ADC_IMM;
         }
 
@@ -42,22 +40,22 @@ namespace Tests.nes.cpu
         {
             _ram[0] = op;
             const byte ExpetedResult = 0x11;
-            setValue(ExpetedResult, _cpu);
+            setValue(ExpetedResult, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpetedResult, _cpu.A);
+            Assert.Equal(ExpetedResult, CPU.A);
         }
 
         [Fact]
         public void ShouldUseCarry()
         {
             const byte ExpectedResult = 0x01;
-            _cpu.P |= PFlag.C;
+            CPU.P |= PFlag.C;
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedResult, _cpu.A);
+            Assert.Equal(ExpectedResult, CPU.A);
         }
 
         [Fact]
@@ -68,20 +66,20 @@ namespace Tests.nes.cpu
             const byte Initical = 0xFF;
             const byte ToAdd = 0x1F;
 
-            _cpu.A = Initical;
+            CPU.A = Initical;
             _ram[1] = ToAdd;
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedResult, _cpu.A);
+            Assert.Equal(ExpectedResult, CPU.A);
         }
 
         [Fact]
         public void CheckZeroFlag()
         {
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(CPU, PFlag.Z);
         }
 
         [Fact]
@@ -89,31 +87,31 @@ namespace Tests.nes.cpu
         {
             _ram[1] = 1;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.Z);
         }
 
         [Fact]
         public void CheckCarrySet()
         {
             _ram[1] = 1;
-            _cpu.A = 0xFF;
+            CPU.A = 0xFF;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.C);
+            FlagAssert.AssertFlagSet(CPU, PFlag.C);
         }
 
         [Fact]
         public void CheckCarryUnSet()
         {
             _ram[1] = 1;
-            _cpu.A = 0xFE;
+            CPU.A = 0xFE;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.C);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.C);
         }
 
         [Theory]
@@ -121,12 +119,12 @@ namespace Tests.nes.cpu
         [InlineData(0x80, 0xFF)]
         public void CheckOverflowSet(byte b1, byte b2)
         {
-            _cpu.A = b1;
+            CPU.A = b1;
             _ram[1] = b2;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.V);
+            FlagAssert.AssertFlagSet(CPU, PFlag.V);
         }
 
         [Theory]
@@ -134,12 +132,12 @@ namespace Tests.nes.cpu
         [InlineData(0x01, 0xFF)]
         public void CheckOverflowUnSet(byte b1, byte b2)
         {
-            _cpu.A = b1;
+            CPU.A = b1;
             _ram[1] = b2;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.V);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.V);
         }
 
         [Fact]
@@ -147,17 +145,17 @@ namespace Tests.nes.cpu
         {
             _ram[1] = 0xFF;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(CPU, PFlag.N);
         }
 
         [Fact]
         public void CheckNegativeUnset()
         {
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.N);
         }
     }
 }

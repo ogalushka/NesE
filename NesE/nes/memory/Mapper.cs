@@ -43,7 +43,7 @@ namespace NesE.nes.memory
             return memory;
         }
 
-        public static IMemory AddRomMem(ROM rom, Memory cpuMemory, Memory ppuMem)
+        public static IMemory AddRomMem(IROM rom, Memory cpuMemory, Memory ppuMem)
         {
             if (rom.Mapper != 0)
             {
@@ -78,6 +78,7 @@ namespace NesE.nes.memory
 
             var chrRom = rom.GetChrRom();
             ppuMem.AddAddressSpace(0, 0b0001_1111_1111_1111, rom.GetChrRom());
+            ppuMem.AddAddressSpace(1, 0b0001_1111_1111_1111, rom.GetChrRom());
 
             return cpuMemory;
         }

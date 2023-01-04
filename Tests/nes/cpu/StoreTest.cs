@@ -57,7 +57,7 @@ namespace Tests.nes.cpu
         [ClassData(typeof(TransferTestData))]
         public void ShouldTransferValue(byte op, Action<byte, CPU> setValue, Func<CPU, byte> getValue)
         {
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte Expected = 0x76;
             setValue(Expected, CPU);
 
@@ -70,7 +70,7 @@ namespace Tests.nes.cpu
         [ClassData(typeof(FlagTestData))]
         public void ShouldSetZero(byte op, Action<byte, CPU> setValue)
         {
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             CPU.ClearFlag(PFlag.Z);
             setValue(0, CPU);
 
@@ -83,7 +83,7 @@ namespace Tests.nes.cpu
         [ClassData(typeof(FlagTestData))]
         public void ShouldClearZero(byte op, Action<byte, CPU> setValue)
         {
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             CPU.SetFlag(PFlag.Z);
             setValue(1, CPU);
 
@@ -96,7 +96,7 @@ namespace Tests.nes.cpu
         [ClassData(typeof(FlagTestData))]
         public void ShouldSetNegative(byte op, Action<byte, CPU> setValue)
         {
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             CPU.ClearFlag(PFlag.N);
             setValue(0b1000_0000, CPU);
 
@@ -109,7 +109,7 @@ namespace Tests.nes.cpu
         [ClassData(typeof(FlagTestData))]
         public void ShouldClearNegative(byte op, Action<byte, CPU> setValue)
         {
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             CPU.SetFlag(PFlag.N);
             setValue(0, CPU);
 

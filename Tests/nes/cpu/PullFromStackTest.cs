@@ -22,9 +22,9 @@ namespace Tests.nes.cpu
         [Fact]
         public void ShouldPullAccumulator()
         {
-            CPU.Ram[0] = OP.PLA_IMP;
+            CPU.RAM[0] = OP.PLA_IMP;
             byte Expected = 0x44;
-            CPU.Ram[0x100 | CPU.S] = Expected;
+            CPU.RAM[0x100 | CPU.S] = Expected;
             CPU.S--;
 
             CPU.Step();
@@ -35,10 +35,10 @@ namespace Tests.nes.cpu
         [Fact]
         public void ShouldPullStatusIgnoringBytes()
         {
-            CPU.Ram[0] = OP.PLP_IMP;
+            CPU.RAM[0] = OP.PLP_IMP;
             byte Expected = 0b1110_0011;
             byte memValue = (byte)((Expected & 0b1101_1111) | 0b0001_0000);
-            CPU.Ram[0x100 | CPU.S] = memValue;
+            CPU.RAM[0x100 | CPU.S] = memValue;
             CPU.S--;
 
             CPU.Step();
@@ -50,7 +50,7 @@ namespace Tests.nes.cpu
         [ClassData(typeof(TestData))]
         public void ShouldChangeStackPointer(byte op, Func<CPU, byte> registerGetter)
         {
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             var Expected = CPU.S;
             CPU.S--;
 
@@ -63,8 +63,8 @@ namespace Tests.nes.cpu
         public void ShouldSetN()
         {
             CPU.ClearFlag(PFlag.N);
-            CPU.Ram[0] = OP.PLA_IMP;
-            CPU.Ram[0x100 | CPU.S] = 0b1000_0000;
+            CPU.RAM[0] = OP.PLA_IMP;
+            CPU.RAM[0x100 | CPU.S] = 0b1000_0000;
             CPU.S--;
 
             CPU.Step();
@@ -76,8 +76,8 @@ namespace Tests.nes.cpu
         public void ShouldClearN()
         {
             CPU.SetFlag(PFlag.N);
-            CPU.Ram[0] = OP.PLA_IMP;
-            CPU.Ram[0x100 | CPU.S] = 0;
+            CPU.RAM[0] = OP.PLA_IMP;
+            CPU.RAM[0x100 | CPU.S] = 0;
             CPU.S--;
 
             CPU.Step();
@@ -89,8 +89,8 @@ namespace Tests.nes.cpu
         public void ShouldSetZ()
         {
             CPU.ClearFlag(PFlag.Z);
-            CPU.Ram[0] = OP.PLA_IMP;
-            CPU.Ram[0x100 | CPU.S] = 0;
+            CPU.RAM[0] = OP.PLA_IMP;
+            CPU.RAM[0x100 | CPU.S] = 0;
             CPU.S--;
 
             CPU.Step();
@@ -102,8 +102,8 @@ namespace Tests.nes.cpu
         public void ShouldClearZ()
         {
             CPU.SetFlag(PFlag.Z);
-            CPU.Ram[0] = OP.PLA_IMP;
-            CPU.Ram[0x100 | CPU.S] = 1;
+            CPU.RAM[0] = OP.PLA_IMP;
+            CPU.RAM[0x100 | CPU.S] = 1;
             CPU.S--;
 
             CPU.Step();

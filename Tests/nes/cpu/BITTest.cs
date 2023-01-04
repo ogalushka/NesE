@@ -8,15 +8,13 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class BITTest
+    public class BITTest : BaseCPUTest
     {
         public TestRAM _ram;
-        public CPU _cpu;
 
         public BITTest()
         {
-            _ram = new TestRAM();
-            _cpu = new CPU(_ram);
+            _ram = CPU.RAM as TestRAM;
         }
 
         public class BITTestData : IEnumerable<object[]>
@@ -35,11 +33,11 @@ namespace Tests.nes.cpu
         public void CheckZeroFlagSet(byte op, Action<byte, CPU> setValue)
         {
             _ram[0] = op;
-            setValue(0, _cpu);
+            setValue(0, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(CPU, PFlag.Z);
         }
 
         [Theory]
@@ -47,12 +45,12 @@ namespace Tests.nes.cpu
         public void CheckZeroFlagCleared(byte op, Action<byte, CPU> setValue)
         {
             _ram[0] = op;
-            _cpu.A = 1;
-            setValue(1, _cpu);
+            CPU.A = 1;
+            setValue(1, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.Z);
         }
 
         [Theory]
@@ -60,11 +58,11 @@ namespace Tests.nes.cpu
         public void CheckOverflowSet(byte op, Action<byte, CPU> setValue)
         {
             _ram[0] = op;
-            setValue(0b01000000, _cpu);
+            setValue(0b01000000, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.V);
+            FlagAssert.AssertFlagSet(CPU, PFlag.V);
         }
 
         [Theory]
@@ -72,11 +70,11 @@ namespace Tests.nes.cpu
         public void CheckOverflowClear(byte op, Action<byte, CPU> setValue)
         {
             _ram[0] = op;
-            setValue(0b10111111, _cpu);
+            setValue(0b10111111, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.V);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.V);
         }
 
         [Theory]
@@ -84,11 +82,11 @@ namespace Tests.nes.cpu
         public void CheckNegativeSet(byte op, Action<byte, CPU> setValue)
         {
             _ram[0] = op;
-            setValue(0b10000000, _cpu);
+            setValue(0b10000000, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(CPU, PFlag.N);
         }
 
         [Theory]
@@ -96,11 +94,11 @@ namespace Tests.nes.cpu
         public void CheckNegativeClear(byte op, Action<byte, CPU> setValue)
         {
             _ram[0] = op;
-            setValue(0b01111111, _cpu);
+            setValue(0b01111111, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.N);
         }
     }
 }

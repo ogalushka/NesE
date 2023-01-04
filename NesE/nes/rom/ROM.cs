@@ -2,7 +2,7 @@
 
 namespace NesE.nes.rom
 {
-    public class ROM
+    public class ROM : IROM
     {
         const int HeaderBytes = 16;
         const int TrainerBytes = 512;
@@ -17,9 +17,11 @@ namespace NesE.nes.rom
         public readonly bool VSUnisystem;
         public readonly bool PlayChoice;
         public readonly TVSystem TVSystem;
-        public readonly int Mapper;
+        private readonly int _mapper;
 
         public readonly byte[] _rawData;
+
+        public int Mapper => _mapper;
 
         public ROM(byte[] data)
         {
@@ -43,7 +45,7 @@ namespace NesE.nes.rom
 
             var flags7 = data[7];
 
-            Mapper = (flags7 & 0xF0) | ((flags6 & 0xF0) >> 4);
+            _mapper = (flags7 & 0xF0) | ((flags6 & 0xF0) >> 4);
             VSUnisystem = (flags7 & 1) != 0;
             PlayChoice = (flags7 & 0b10) != 0;
 

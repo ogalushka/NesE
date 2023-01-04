@@ -8,7 +8,7 @@ namespace Tests.nes.cpu
         [Fact]
         public void ShouldExecute()
         {
-            CPU.Ram[0] = OP.NOP_IMP;
+            CPU.RAM[0] = OP.NOP_IMP;
 
             CPU.Step();
 

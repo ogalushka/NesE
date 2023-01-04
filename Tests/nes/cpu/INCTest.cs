@@ -1,5 +1,4 @@
-﻿using NesE.nes;
-using NesE.nes.cpu;
+﻿using NesE.nes.cpu;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,15 +6,8 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class INCTest
+    public class INCTest : BaseCPUTest
     {
-        public readonly CPU _cpu;
-
-        public INCTest()
-        {
-            _cpu = new CPU(new TestRAM());
-        }
-
         private class TestData : IEnumerable<object[]>
         {
             public IEnumerator<object[]> GetEnumerator()
@@ -34,62 +26,62 @@ namespace Tests.nes.cpu
         public void ShouldIncrement(byte op, Action<byte, CPU> memorySetter, Func<CPU, byte> memoryGetter)
         {
             const byte Expected = 0x32;
-            _cpu.Ram[0] = op;
-            memorySetter(Expected - 1, _cpu);
+            CPU.RAM[0] = op;
+            memorySetter(Expected - 1, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(Expected, memoryGetter(_cpu));
+            Assert.Equal(Expected, memoryGetter(CPU));
         }
 
         [Theory]
         [ClassData(typeof(TestData))]
         public void ShouldSetZero(byte op, Action<byte, CPU> memorySetter, Func<CPU, byte> memoryGetter)
         {
-            _cpu.Ram[0] = op;
-            memorySetter(0xFF, _cpu);
+            CPU.RAM[0] = op;
+            memorySetter(0xFF, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(CPU, PFlag.Z);
         }
 
         [Theory]
         [ClassData(typeof(TestData))]
         public void ShouldClearZero(byte op, Action<byte, CPU> memorySetter, Func<CPU, byte> memoryGetter)
         {
-            _cpu.SetFlag(PFlag.Z);
-            _cpu.Ram[0] = op;
-            memorySetter(0, _cpu);
+            CPU.SetFlag(PFlag.Z);
+            CPU.RAM[0] = op;
+            memorySetter(0, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.Z);
         }
 
         [Theory]
         [ClassData(typeof(TestData))]
         public void ShouldSetNegative(byte op, Action<byte, CPU> memorySetter, Func<CPU, byte> memoryGetter)
         {
-            _cpu.Ram[0] = op;
-            memorySetter(0b0111_1111, _cpu);
+            CPU.RAM[0] = op;
+            memorySetter(0b0111_1111, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(CPU, PFlag.N);
         }
 
         [Theory]
         [ClassData(typeof(TestData))]
         public void ShouldClearNegative(byte op, Action<byte, CPU> memorySetter, Func<CPU, byte> memoryGetter)
         {
-            _cpu.SetFlag(PFlag.N);
-            _cpu.Ram[0] = op;
-            memorySetter(0xFF, _cpu);
+            CPU.SetFlag(PFlag.N);
+            CPU.RAM[0] = op;
+            memorySetter(0xFF, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.N);
         }
     }
 }

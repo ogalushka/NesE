@@ -1,6 +1,4 @@
-﻿using NesE.nes;
-using NesE.nes.cpu;
-using NesE.nes.cpu.opcode;
+﻿using NesE.nes.cpu;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,14 +6,11 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class ANDTest
+    public class ANDTest : BaseCPUTest
     {
-        private CPU _cpu;
-
         public ANDTest()
         {
-            _cpu = new CPU(new TestRAM());
-            _cpu.Ram[0] = OP.AND_IMM;
+            CPU.RAM[0] = OP.AND_IMM;
         }
 
         private class ANDTestData : IEnumerable<object[]>
@@ -39,52 +34,52 @@ namespace Tests.nes.cpu
         [ClassData(typeof(ANDTestData))]
         public void ShouldAnd(byte op, Action<byte, CPU> setValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte ExpectedResult = 0b10000010;
-            setValue(0b10101010, _cpu);
-            _cpu.A = 0b11000011;
+            setValue(0b10101010, CPU);
+            CPU.A = 0b11000011;
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedResult, _cpu.A);
+            Assert.Equal(ExpectedResult, CPU.A);
         }
 
         [Fact]
         public void ShouldSetZero()
         {
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(CPU, PFlag.Z);
         }
 
         [Fact]
         public void ShouldClearZero()
         {
-            _cpu.Ram[1] = 0b10101010;
-            _cpu.A = 0b11000011;
+            CPU.RAM[1] = 0b10101010;
+            CPU.A = 0b11000011;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.Z);
         }
 
         [Fact]
         public void ShouldClearNegative()
         {
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.N);
         }
 
         [Fact]
         public void ShouldSetNegative()
         {
-            _cpu.Ram[1] = 0b10000000;
-            _cpu.A = 0b10000000;
+            CPU.RAM[1] = 0b10000000;
+            CPU.A = 0b10000000;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.N);
+            FlagAssert.AssertFlagSet(CPU, PFlag.N);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Tests.nes.cpu
     {
         public INYTest() : base()
         {
-            CPU.Ram[0] = OP.INY_IMP;
+            CPU.RAM[0] = OP.INY_IMP;
         }
 
         [Fact]

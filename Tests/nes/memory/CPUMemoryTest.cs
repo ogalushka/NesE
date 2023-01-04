@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Tests.nes.memory
 {
-    public class MemoryTest
+    public class CPUMemoryTest
     {
         [Fact]
         public void ShouldMirrorInternalRam()

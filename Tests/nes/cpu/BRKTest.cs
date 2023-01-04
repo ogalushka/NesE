@@ -1,60 +1,52 @@
-﻿using NesE.nes;
-using NesE.nes.cpu;
+﻿using NesE.nes.cpu;
 using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class BRKTest
+    public class BRKTest : BaseCPUTest
     {
-        private readonly CPU _cpu;
-
-        public BRKTest()
-        {
-            _cpu = new CPU(new TestRAM());
-        }
-
         [Fact]
         public void ShouldSetPC()
         {
-            _cpu.Ram[0] = OP.BRK_IMP;
+            CPU.RAM[0] = OP.BRK_IMP;
             const ushort ExpectedPC = 0x1234;
-            ushort expectedSP = (ushort)(_cpu.S - 3);
-            _cpu.Ram[0xFFFE] = 0x34;
-            _cpu.Ram[0xFFFF] = 0x12;
+            ushort expectedSP = (ushort)(CPU.S - 3);
+            CPU.RAM[0xFFFE] = 0x34;
+            CPU.RAM[0xFFFF] = 0x12;
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedPC, _cpu.PC);
-            Assert.Equal(expectedSP, _cpu.S);
+            Assert.Equal(ExpectedPC, CPU.PC);
+            Assert.Equal(expectedSP, CPU.S);
         }
 
         [Fact]
         public void ShouldSavePC()
         {
-            _cpu.PC = 0x1234;
-            _cpu.Ram[0x1234] = OP.BRK_IMP;
+            CPU.PC = 0x1234;
+            CPU.RAM[0x1234] = OP.BRK_IMP;
 
-            var pointLower = 0x100 | (_cpu.S - 1);
+            var pointLower = 0x100 | (CPU.S - 1);
             var valueLower = 0x35;
-            var pointHigher = 0x100 | _cpu.S;
+            var pointHigher = 0x100 | CPU.S;
             var valueHigher = 0x12;
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(valueLower, _cpu.Ram[pointLower]);
-            Assert.Equal(valueHigher, _cpu.Ram[pointHigher]);
+            Assert.Equal(valueLower, CPU.RAM[pointLower]);
+            Assert.Equal(valueHigher, CPU.RAM[pointHigher]);
         }
 
         [Fact]
         public void ShouldSavePWithFlag()
         {
-            _cpu.Ram[0] = OP.BRK_IMP;
-            _cpu.SetFlag(PFlag.C);
-            var P = (byte)(_cpu.P | PFlag.B | PFlag._);
+            CPU.RAM[0] = OP.BRK_IMP;
+            CPU.SetFlag(PFlag.C);
+            var P = (byte)(CPU.P | PFlag.B | PFlag._);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(P, _cpu.PullFromStack());
+            Assert.Equal(P, CPU.PullFromStack());
         }
     }
 }

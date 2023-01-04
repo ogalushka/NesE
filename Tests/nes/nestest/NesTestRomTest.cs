@@ -1,5 +1,5 @@
 ﻿using NesE.nes;
-using System.Diagnostics;
+using NesE.nes.rom;
 using System.IO;
 using Xunit;
 
@@ -10,10 +10,10 @@ namespace Tests.nes.nestest
         [Fact]
         public void TestRom()
         {
-            var console = new Nes();
+            var console = new NES();
             var romData = File.ReadAllBytes("rom/nestest.nes");
             var logData = File.ReadAllLines("rom/log.txt");
-            console.StartRom(romData);
+            console.SetRom(new ROM(romData));
             console.CPU.PC = 0xC000;
             console.CPU.S = 0xFD;
 
@@ -29,8 +29,8 @@ namespace Tests.nes.nestest
                 var logRegisters = currentLog.Substring(48, 25);
                 //Debug.WriteLine(currentLog);
                 //Debug.WriteLine($"{cpu.PC.ToString("X4")}                                            A:{cpu.A.ToString("X2")} X:{cpu.X.ToString("X2")} Y:{cpu.Y.ToString("X2")} P:{((byte)cpu.P).ToString("X2")} SP:{cpu.S.ToString("X2")}");
-                Assert.Equal(0, console.CPU.Ram[0x2]);
-                Assert.Equal(0, console.CPU.Ram[0x3]);
+                Assert.Equal(0, console.CPU.RAM[0x2]);
+                Assert.Equal(0, console.CPU.RAM[0x3]);
                 Assert.Equal(currentLog.Substring(0, 4), console.CPU.PC.ToString("X4"));
                 Assert.Equal(logRegisters, cpuRegisters);
                 console.Update(0);

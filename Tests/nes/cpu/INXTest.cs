@@ -7,7 +7,7 @@ namespace Tests.nes.cpu
     {
         public INXTest() : base()
         {
-            CPU.Ram[0] = OP.INX_IMP;
+            CPU.RAM[0] = OP.INX_IMP;
         }
 
         [Fact]

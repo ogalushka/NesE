@@ -8,7 +8,7 @@ namespace Tests.nes.cpu
         protected readonly CPU CPU;
         public BaseCPUTest()
         {
-            CPU = new CPU(new TestRAM());
+            CPU = new CPU(new TestRAM(), new Interupts());
         }
     }
 }

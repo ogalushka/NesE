@@ -8,11 +8,11 @@ namespace Tests.nes.cpu
         [Fact]
         public void ShouldJump()
         {
-            CPU.Ram[0] = OP.RTS_IMP;
+            CPU.RAM[0] = OP.RTS_IMP;
             const ushort Expected = 0x1234;
 
-            CPU.Ram[0x1FF] = 0x12;
-            CPU.Ram[0x1FE] = 0x33;
+            CPU.RAM[0x1FF] = 0x12;
+            CPU.RAM[0x1FE] = 0x33;
             CPU.S = 0xFD;
 
             CPU.Step();
@@ -23,7 +23,7 @@ namespace Tests.nes.cpu
         [Fact]
         public void ShouldPushReturnOnStack()
         {
-            CPU.Ram[0] = OP.RTS_IMP;
+            CPU.RAM[0] = OP.RTS_IMP;
             CPU.S = 0xFD;
 
             CPU.Step();

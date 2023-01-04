@@ -1,6 +1,4 @@
-﻿using NesE.nes;
-using NesE.nes.cpu;
-using NesE.nes.cpu.opcode;
+﻿using NesE.nes.cpu;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,16 +6,13 @@ using Xunit;
 
 namespace Tests.nes.cpu
 {
-    public class LSRTest
+    public class LSRTest : BaseCPUTest
     {
-        private CPU _cpu;
-
         public LSRTest()
         {
-            _cpu = new CPU(new TestRAM());
             var enumerator = new TestData().GetEnumerator();
             enumerator.MoveNext();
-            _cpu.Ram[0] = (byte)enumerator.Current[0];
+            CPU.RAM[0] = (byte)enumerator.Current[0];
         }
 
         private class TestData : IEnumerable<object[]>
@@ -38,72 +33,72 @@ namespace Tests.nes.cpu
         [ClassData(typeof(TestData))]
         public void ShouldShift(byte op, Action<byte, CPU> setValue, Func<CPU, byte> getValue)
         {
-            _cpu.Ram[0] = op;
+            CPU.RAM[0] = op;
             const byte ExpectedResult = 0b01000000;
-            setValue(0b10000000, _cpu);
+            setValue(0b10000000, CPU);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(ExpectedResult, getValue(_cpu));
+            Assert.Equal(ExpectedResult, getValue(CPU));
         }
 
         [Fact]
         public void ShouldNotUseCarry()
         {
-            _cpu.A = 0;
-            _cpu.SetFlag(PFlag.C);
+            CPU.A = 0;
+            CPU.SetFlag(PFlag.C);
 
-            _cpu.Step();
+            CPU.Step();
 
-            Assert.Equal(0b00000000, _cpu.A);
+            Assert.Equal(0b00000000, CPU.A);
         }
 
         [Fact]
         public void ShouldSetZero()
         {
-            _cpu.A = 0b00000001;
+            CPU.A = 0b00000001;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagSet(CPU, PFlag.Z);
         }
 
         [Fact]
         public void ShouldClearZero()
         {
-            _cpu.A = 0b11000011;
+            CPU.A = 0b11000011;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.Z);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.Z);
         }
 
         [Fact]
         public void ShouldClearNegative()
         {
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.N);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.N);
         }
 
         [Fact]
         public void ShouldSetCarry()
         {
-            _cpu.A = 0b00000001;
+            CPU.A = 0b00000001;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagSet(_cpu, PFlag.C);
+            FlagAssert.AssertFlagSet(CPU, PFlag.C);
         }
 
         [Fact]
         public void ShouldClearCarry()
         {
-            _cpu.A = 0b01000000;
+            CPU.A = 0b01000000;
 
-            _cpu.Step();
+            CPU.Step();
 
-            FlagAssert.AssertFlagCleared(_cpu, PFlag.C);
+            FlagAssert.AssertFlagCleared(CPU, PFlag.C);
         }
     }
 }

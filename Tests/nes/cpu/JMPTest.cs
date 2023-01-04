@@ -23,7 +23,7 @@ namespace Tests.nes.cpu
         [ClassData(typeof(TestData))]
         public void ShouldJump(byte op, Action<ushort, CPU> setter)
         {
-            CPU.Ram[0] = op;
+            CPU.RAM[0] = op;
             ushort Expected = 0x1234;
             setter(Expected, CPU);
 
